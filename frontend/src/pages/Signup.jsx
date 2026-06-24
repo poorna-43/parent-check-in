@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 function Signup() {
+    const navigate = useNavigate();
      const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,11 +21,14 @@ function Signup() {
       }
     );
 
-    console.log(response.data);
+    alert("Account created successfully!");
+    navigate("/login");
 
   } catch (error) {
-    console.error(error);
-  }
+  alert(
+    error.response?.data?.message || "Something went wrong"
+  );
+}
 };
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
