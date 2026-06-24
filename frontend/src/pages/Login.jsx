@@ -1,6 +1,29 @@
 import { Link } from "react-router-dom";
-
+import { useState } from "react";
+import axios from "axios";
 function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+  "http://localhost:5000/api/auth/login",
+  {
+    email,
+    password,
+  }
+);
+      alert(response.data.message);
+    } catch (error) {
+       alert(
+      error.response?.data?.message ||
+      "Something went wrong"
+    );
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
 
@@ -10,16 +33,20 @@ function Login() {
           Login
         </h1>
 
-        <form className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="email"
             placeholder="Email"
             className="w-full border p-3 rounded-lg"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
 
           <input
             type="password"
             placeholder="Password"
+            value={password}
+onChange={(e) => setPassword(e.target.value)}
             className="w-full border p-3 rounded-lg"
           />
 
