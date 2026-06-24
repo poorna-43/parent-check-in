@@ -4,7 +4,7 @@ console.log("authRoutes loaded");
 const router = express.Router();
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
-
+const jwt = require("jsonwebtoken");
 
 router.post("/signup", async (req, res) => {
   try {
@@ -65,10 +65,22 @@ router.post("/login", async (req, res) => {
       });
     }
 
-    res.status(200).json({
-      success: true,
-      message: "Login successful",
-    });
+    const token = jwt.sign(
+  {
+    userId: user._id,
+    email: user.email,
+  },
+  process.env.JWT_SECRET,
+  {
+    expiresIn: "7d",
+  }
+);
+
+res.status(200).json({
+  success: true,
+  message: "Login successful",
+  token,
+});
 
   } catch (error) {
     console.error(error);

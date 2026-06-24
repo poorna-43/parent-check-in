@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -15,7 +17,12 @@ function Login() {
     password,
   }
 );
-      alert(response.data.message);
+      localStorage.setItem(
+  "token",
+  response.data.token
+);
+
+navigate("/dashboard");
     } catch (error) {
        alert(
       error.response?.data?.message ||
